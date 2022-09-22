@@ -1,0 +1,13 @@
+#Host Enumeration Questionnaire
+
+Where Am I? hostname
+
+Who am I? whoami, id
+
+Who else is on here? w, who
+
+What am I allowed to do? sudo -l
+
+What's going on? ip a/ifconfig  ss/netstat
+                 ip n/arp       uname -a
+                 ip r/route     cat /etc/os-release
