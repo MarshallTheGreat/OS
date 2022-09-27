@@ -1,0 +1,16 @@
+cat /boot/grub/grub.cfg
+sudo xxd -l 512 -g 1 <partitioned device>
+sudo dd if=/dev/sda of=MBRCopy bs=1 count=512
+du - disk usage
+df - disk free
+lsblk - shows path of block devices
+linux /boot/vmlinuz-4.15
+
+SystemV
+     - Service and Process manager
+     - RunLevels
+     - Services load in order, sequentially
+     - Script based service files
+     - Script location: /etc/init.d
+     - Config file: /etc/inittab
+     - RunLevel Script location: /etc/rc<#>.d
