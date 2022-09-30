@@ -1,0 +1,42 @@
+Get-ChildItem 'C:\$Recycle.Bin' - Force -Recurse | ForEach-Object { if (($_.Name).StartsWith('$I')) { Write-Host "$_" -NoNewline; Write-Host " --> " -ForegroundColor Green -NoNewline ; Write-Host $(get-content $_.fullname) } } 
+
+Recently Accessed Programs: C:\Users\<user>\appdata\roaming\microsoft\windows\recent
+
+Getting User SID:
+  - Many artifacts require the SID to dig into user specific registry locations
+    - get-wmiobject win32_useraccount | select name,sid (PS)
+    - get-localuser | select name,sid (PS)
+    - wmic useraccount get name,sid (cmd)
+
+UserAssist:
+  - UserAssist Registry key tracks GUI based programs ran by a particular user
+    - View executable files run
+      - Get-ItemProperty 'REGISTRY::HKEY_USERS\*\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\UserAssist\{CEBFF5CD-ACE2-4F4F-9178-9926F41749EA}\Count'
+    - View shortcut files executed
+      - Get-ItemProperty 'REGISTRY::HKEY_USERS\*\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\UserAssist\{F4E57C4B-2036-45F0-A9AB-443BCFE33D9F}\Count'
+
+Windows BAM:
+  - BAM is a windows service that controls activity of background applications
+    - Get-Itemproperty 'HKLM:\SYSTEM\CurrentControlSet\Services\bam\UserSettings\*' (Windows 1709 & 1803)
+    - Get-Itemproperty 'HKLM:\SYSTEM\CurrentControlSet\Services\bam\state\UserSettings\*' (Windows 1809 and newer)
+
+Prefetch:
+  - Prefetch files are created by windows when an application is run for the first time
+    - gci -Path 'C:\Windows\Prefetch' -ErrorAction Continue | select * | select -first 5
+
+Jump Lists:
+  - Windows taskbar is engineered to allow users to access items they have frequently used quickly
+    - gci -Recurse C:\Users\*\AppData\Roaming\Microsoft\Windows\Recent -ErrorAction Continue | select FullName, LastAccessTime
+    
+Recent Files:
+  - Registry key that will track the last files and folders opened
+  - Overal key will trakc the overall order of the last 150 files or folders opened
+    - List Files in recent docs
+      - gci 'REGISTRY::HKEY_USERS\*\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs'
+    - Convert file Hex to Unicode
+      - [System.Text.Encoding]::Unicode.GetString((gp "REGISTRY::HKEY_USERS\*\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs"
+    - Convert all of a users values from hex to unicode
+      - Get-Item "REGISTRY::HKEY_USERS\*\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs\.txt" | select -Expand property | ForEach-Object { [System.Text.Encoding]::Default.GetString((Get-ItemProperty -Path "REGISTRY::HKEY_USERS\*\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs\.txt" -Name $_).$_)}
+      
+      
+      
