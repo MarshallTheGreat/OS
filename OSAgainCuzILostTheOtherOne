@@ -38,5 +38,19 @@ Recent Files:
     - Convert all of a users values from hex to unicode
       - Get-Item "REGISTRY::HKEY_USERS\*\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs\.txt" | select -Expand property | ForEach-Object { [System.Text.Encoding]::Default.GetString((Get-ItemProperty -Path "REGISTRY::HKEY_USERS\*\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs\.txt" -Name $_).$_)}
       
-      
+Browser Artifacts:
+  - Stores details for each user account
+  - History will record the access to the file on the website that was accessed via a link
+  - .\strings.exe 'C:\Users\<username>\AppData\Local\Google\Chrome\User Data\Default\History'
+  - Find FQDNs in Sqlite Text Files
+    - $History = (Get-Content 'C:\users\<username>\AppData\Local\Google\Chrome\User Data\Default\History') -replace "[^a-zA-Z0-9\.\:\/]",""
+
+Configure Audit Policy:
+  - View entire auditpol list;                                                  auditpol /get /category:*
+  - Set File SYstem subcategory to audit;                                       auditpol /set /subcategory:"File System"
+  - Remove File System subcategory auditing;                                    auditpol /set /subcategory:"File System" /success:disable
+  - To list the global object access auditing entries set on files or folders;  auditpol /resourceSACL /type:File /view
+  - To list the global object access auditing entries set on Registry Keys;     auditpol /resourceSACL /type:Key /view
+
+
       
