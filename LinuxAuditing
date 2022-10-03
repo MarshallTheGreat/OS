@@ -1,0 +1,56 @@
+###Linux Auditing and Authentication
+
+Authentication:
+  - /var/log/auth.log - Authentication related events
+  - /var/run/utmp - Users currently logged in
+  - /var/log/wtmp - History file for utmp
+  - /var/log/btmp - Failed login attempts
+  
+Application:
+  - apache; web server
+  - apt; package manager
+  - /var/log/mysql.log
+  
+System:
+  - /var/log/messages
+  - /var/log/syslog
+  - dmesg = Device Messenger (Queries /proc/kmsg)
+  
+Logging Daemon:
+  - /usr/sbin/rsyslogd
+    - User space daemon; reads messages written to /dev/log and formats and stores them based on /etc/rsyslog.conf rules
+      - syslog() via libc
+      - kernel ring buffer
+      - audit records via audit subsystem (auditd)
+      
+Config File:
+  - /etc/rsyslog.conf
+    - Log entries follow syslog standard (facility.severity)
+      - facility = what program, or part of system, log is from
+      - severity = urgency
+      
+Facility Codes:
+0   kernel messages
+1   user-level messages
+2   mail system
+3   system daemons
+4   security/authorization messages
+5   messages generated internally by syslogd
+6   line printer subsystem
+7   network news subsystem
+8   UUCP subsystem
+9   clock daemon
+10  security/authorization messages
+11  FTP daemon
+12  NTP subsystem13|log audit
+
+Severity Codes:
+0  emerg, panic:  Emergency: system is unusable
+1  alert:         Action must be taken immediately
+2  crit:          Critical conditions
+3  err, error:    Error conditions
+4  warn, warning: Warning conditions
+5  notice:        Normal but significant condition
+6  info:          Informational messages
+7  Debug:         Debug-level messages
+  
