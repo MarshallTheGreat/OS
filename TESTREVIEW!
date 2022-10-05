@@ -1,0 +1,55 @@
+///20221005
+-------------------------
+
+///WINDOWS
+
+  net use * https://live.sysinternals.com // Installing SysInternals
+  
+  SysInternals:
+    - autoruns
+    - process explorer
+    - tcpview
+    
+  UserAssists:
+    - ROT13 // Decryption, use CyberChef
+  
+  Recycle Bin:
+    - $I // Contents of the file
+    - $R // Location of the file
+  
+  Windows Artifacts:
+    - Browsers
+    - Recycle Bin
+    - Jump Lists
+    - PreFetch
+ 
+  Persistence:
+    - Check these directories for persistence // PROFILES
+      - All Users, All Hosts
+      - All Users, Current Host
+      - Current User, All Hosts
+      - Current user, Current Host
+    - test-path C:\Windows\System32\WindowsPowerShell\v1.0\profile.ps1 // Test legitimacy of profiles
+
+
+  Useful Commands:
+    - netstat -anob
+    - Get-NetTCPConnection
+    - Get-Process (-d 452 | select name,path)
+    - sc query
+  
+
+
+///LINUX
+
+  Persistence:
+    - /etc/profile // Cat it.
+    - /etc/bash.bashrc
+  
+  Useful Commands:
+    - netstat -pant / -ltup
+    - systemctl (status 1455)
+    - htop
+    - /var/spool/cron/crontabs/
+    - ps -elf --forest
+    
